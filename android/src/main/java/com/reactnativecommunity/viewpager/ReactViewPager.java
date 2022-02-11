@@ -32,6 +32,7 @@ public class ReactViewPager extends VerticalViewPager {
 
     private final List<View> mViews = new ArrayList<>();
     private boolean mIsViewPagerInIntentionallyInconsistentState = false;
+    private int mSetPageValue = -1;
 
     void addView(View child, int index) {
       mViews.add(index, child);
@@ -199,6 +200,11 @@ public class ReactViewPager extends VerticalViewPager {
 
   public void setCurrentItemFromJs(int item, boolean animated) {
     mIsCurrentItemFromJs = true;
+    if (item < getAdapter().getCount()) {
+      setCurrentItem(item);
+    } else {
+      mSetPageValue = item;
+    }
     setCurrentItem(item, animated);
     mEventDispatcher.dispatchEvent(new PageSelectedEvent(getId(), item));
     mIsCurrentItemFromJs = false;
@@ -230,6 +236,10 @@ public class ReactViewPager extends VerticalViewPager {
 
   /*package*/ void addViewToAdapter(View child, int index) {
     getAdapter().addView(child, index);
+    if (index == mSetPageValue) {
+      setCurrentItem(mSetPageValue);
+      mSetPageValue = -1;
+    }
   }
 
   /*package*/ void removeViewFromAdapter(int index) {
