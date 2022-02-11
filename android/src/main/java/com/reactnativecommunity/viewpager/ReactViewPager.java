@@ -32,7 +32,6 @@ public class ReactViewPager extends VerticalViewPager {
 
     private final List<View> mViews = new ArrayList<>();
     private boolean mIsViewPagerInIntentionallyInconsistentState = false;
-    private int mSetPageValue = -1;
 
     void addView(View child, int index) {
       mViews.add(index, child);
@@ -145,6 +144,7 @@ public class ReactViewPager extends VerticalViewPager {
   private final EventDispatcher mEventDispatcher;
   private boolean mIsCurrentItemFromJs;
   private boolean mScrollEnabled = true;
+  private int mSetPageValue = -1;
 
   public ReactViewPager(ReactContext reactContext) {
     super(reactContext);
